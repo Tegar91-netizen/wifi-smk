@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Masuk ke Jaringan Wi-Fi</title>
+<style>
+:root{
+  --navy:#0a2a6b; --blue:#1557d6; --sky:#e8f0ff; --ink:#12213f; --muted:#5b6b8c;
+  --line:#d3dcf0; --white:#fff; --err:#c62839; --ok:#0f8a5f;
+}
+*{box-sizing:border-box;margin:0}
+html,body{height:100%}
+body{font-family:"Segoe UI",system-ui,-apple-system,Roboto,Helvetica,Arial,sans-serif;color:var(--ink);background:var(--sky);display:grid;place-items:center;padding:16px}
+.card{width:100%;max-width:880px;min-height:520px;display:grid;grid-template-columns:1fr 1fr;background:var(--white);border-radius:18px;overflow:hidden;box-shadow:0 20px 50px rgba(10,42,107,.18)}
+.brand{background:linear-gradient(160deg,var(--blue),var(--navy));color:#fff;padding:44px 40px;display:flex;flex-direction:column;justify-content:space-between;position:relative;overflow:hidden}
+.brand::after{content:"";position:absolute;right:-90px;bottom:-90px;width:300px;height:300px;border-radius:50%;border:38px solid rgba(255,255,255,.08)}
+.brand svg{width:56px;height:56px}
+.brand h1{font-size:30px;line-height:1.2;margin:22px 0 12px;font-weight:700}
+.brand p{color:#cfdcff;line-height:1.6;max-width:32ch}
+.brand small{color:#a9bfff;font-size:13px}
+.panel{padding:44px 40px;display:flex;flex-direction:column;justify-content:center}
+.panel h2{font-size:24px;margin-bottom:6px}
+.sub{color:var(--muted);margin-bottom:26px;font-size:15px}
+label{display:block;font-size:14px;font-weight:600;margin:16px 0 6px}
+.field{position:relative}
+input[type=text],input[type=password]{width:100%;padding:13px 14px;border:1.5px solid var(--line);border-radius:10px;font-size:16px;color:var(--ink);background:#fff;transition:border-color .15s,box-shadow .15s}
+input:focus{outline:none;border-color:var(--blue);box-shadow:0 0 0 4px rgba(21,87,214,.15)}
+input.bad{border-color:var(--err)}
+.eye{position:absolute;right:6px;top:50%;transform:translateY(-50%);background:none;border:0;color:var(--blue);font-weight:600;font-size:13px;padding:8px 10px;cursor:pointer;border-radius:8px}
+.eye:focus-visible,.btn:focus-visible,.link:focus-visible{outline:3px solid rgba(21,87,214,.4);outline-offset:2px}
+.check{display:flex;gap:10px;align-items:flex-start;margin:18px 0 6px;font-size:14px;color:var(--muted);font-weight:400}
+.check input{margin-top:3px;width:17px;height:17px;accent-color:var(--blue)}
+.msg{min-height:22px;font-size:14px;color:var(--err);margin:8px 0 4px}
+.btn{width:100%;padding:14px;border:0;border-radius:10px;background:var(--blue);color:#fff;font-size:16px;font-weight:700;cursor:pointer;transition:background .15s;display:flex;justify-content:center;align-items:center;gap:10px}
+.btn:hover{background:#0f47b3}
+.btn:disabled{background:#7f9fe6;cursor:wait}
+.spin{width:16px;height:16px;border:2.5px solid rgba(255,255,255,.4);border-top-color:#fff;border-radius:50%;animation:r .7s linear infinite;display:none}
+.btn:disabled .spin{display:block}
+@keyframes r{to{transform:rotate(360deg)}}
+.hint{margin-top:20px;padding:12px 14px;background:var(--sky);border-radius:10px;font-size:13px;color:var(--navy);line-height:1.5}
+.hint b{font-family:Consolas,Menlo,monospace}
+.link{background:none;border:0;color:var(--blue);font-weight:600;cursor:pointer;font-size:14px;padding:0}
+.ok{text-align:center}
+.ok .tick{width:76px;height:76px;border-radius:50%;background:var(--ok);display:grid;place-items:center;margin:0 auto 18px}
+.ok .tick svg{width:38px;height:38px}
+.stats{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:22px 0}
+.stats div{background:var(--sky);border-radius:10px;padding:12px}
+.stats span{display:block;font-size:12px;color:var(--muted)}
+.stats strong{font-size:18px}
+.btn.alt{background:#fff;color:var(--blue);border:1.5px solid var(--blue)}
+.btn.alt:hover{background:var(--sky)}
+[hidden]{display:none!important}
+@media(max-width:720px){
+  .card{grid-template-columns:1fr}
+  .brand{padding:28px 26px}.brand h1{font-size:24px;margin-top:14px}.brand small,.brand::after{display:none}
+  .panel{padding:28px 26px}
+}
+@media(prefers-reduced-motion:reduce){*{transition:none!important;animation-duration:2s!important}}
+</style>
+</head>
+<body>
+<main class="card">
+  <section class="brand">
+    <div>
+      <svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M2 8.8a15 15 0 0 1 20 0"/><path d="M5.5 12.4a10 10 0 0 1 13 0"/><path d="M9 16a5 5 0 0 1 6 0"/><circle cx="12" cy="19.5" r="1" fill="#fff"/></svg>
+      <h1>Selamat datang di Wi-Fi Smk Putra Pakuan Bogor</h1>
+      <p>Masuk dengan akun Anda untuk mulai menggunakan internet.</p>
+    </div>
+    <small>Butuh bantuan? Hubungi petugas jaringan.</small>
+  </section>
+
+  <section class="panel">
+    <!-- Form login -->
+    <div id="loginView">
+      <h2>Masuk ke jaringan</h2>
+      <p class="sub">Gunakan nama pengguna dan kata sandi Anda.</p>
+      <form id="form" novalidate>
+        <label for="user">Nama pengguna</label>
+        <input id="user" type="text" autocomplete="username" autocapitalize="off" placeholder="contoh: budi">
+        <label for="pass">Kata sandi</label>
+        <div class="field">
+          <input id="pass" type="password" autocomplete="current-password" placeholder="Masukkan kata sandi">
+          <button type="button" class="eye" id="eye" aria-label="Tampilkan kata sandi">Lihat</button>
+        </div>
+        <label class="check"><input type="checkbox" id="terms"> Saya setuju dengan syarat penggunaan jaringan.</label>
+        <div class="msg" id="msg" role="alert" aria-live="polite"></div>
+        <button class="btn" id="go" type="submit"><span class="spin"></span><span id="goTxt">Masuk</span></button>
+      </form>
+      <div class="hint">Akun demo: nama pengguna <b>demo</b>, kata sandi <b>demo123</b></div>
+    </div>
+
+    <!-- Berhasil -->
+    <div id="okView" class="ok" hidden>
+      <div class="tick"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg></div>
+      <h2>Anda sudah terhubung</h2>
+      <p class="sub" id="welcome">Selamat menikmati internet.</p>
+      <div class="stats">
+        <div><span>Waktu terhubung</span><strong id="timer">00:00:00</strong></div>
+        <div><span>Sisa kuota sesi</span><strong>Tanpa batas</strong></div>
+      </div>
+      <button class="btn alt" id="out" type="button">Putuskan koneksi</button>
+    </div>
+  </section>
+</main>
+
+<script>
+(function(){
+  var $ = function(id){return document.getElementById(id)};
+  // Akun demo (hanya untuk simulasi offline)
+  var USERS = {demo:"demo123", admin:"admin123"};
+  var user=$("user"), pass=$("pass"), msg=$("msg"), go=$("go"), goTxt=$("goTxt"), tick=null, t0=0;
+
+  $("eye").onclick=function(){
+    var show = pass.type==="password";
+    pass.type = show ? "text" : "password";
+    this.textContent = show ? "Sembunyi" : "Lihat";
+    this.setAttribute("aria-label", show ? "Sembunyikan kata sandi" : "Tampilkan kata sandi");
+  };
+
+  function fail(text, field){
+    msg.textContent = text;
+    user.classList.remove("bad"); pass.classList.remove("bad");
+    if(field) field.classList.add("bad");
+    if(field) field.focus();
+  }
+
+  $("form").addEventListener("submit", function(e){
+    e.preventDefault();
+    var u = user.value.trim(), p = pass.value;
+    msg.textContent=""; user.classList.remove("bad"); pass.classList.remove("bad");
+    if(!u) return fail("Isi nama pengguna terlebih dahulu.", user);
+    if(!p) return fail("Isi kata sandi terlebih dahulu.", pass);
+    if(!$("terms").checked) return fail("Centang persetujuan syarat penggunaan untuk melanjutkan.");
+    go.disabled = true; goTxt.textContent = "Memeriksa akun...";
+    setTimeout(function(){
+      go.disabled = false; goTxt.textContent = "Masuk";
+      if(USERS[u.toLowerCase()] === p){ connected(u); }
+      else { fail("Nama pengguna atau kata sandi salah. Periksa lagi lalu coba masuk.", pass); pass.select(); }
+    }, 1200);
+  });
+
+  function pad(n){return n<10?"0"+n:""+n}
+  function connected(name){
+    $("loginView").hidden = true; $("okView").hidden = false;
+    $("welcome").textContent = "Halo, " + name + ". Selamat menikmati internet.";
+    t0 = Date.now();
+    tick = setInterval(function(){
+      var s = Math.floor((Date.now()-t0)/1000);
+      $("timer").textContent = pad(Math.floor(s/3600))+":"+pad(Math.floor(s%3600/60))+":"+pad(s%60);
+    }, 1000);
+  }
+
+  $("out").onclick=function(){
+    clearInterval(tick); $("timer").textContent="00:00:00";
+    $("okView").hidden = true; $("loginView").hidden = false;
+    pass.value=""; pass.type="password"; $("eye").textContent="Lihat"; $("terms").checked=false; user.focus();
+  };
+})();
+</script>
+</body>
+</html>
